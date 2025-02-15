@@ -5,29 +5,40 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable; // Removed HasApiTokens since we're using JWT
 
-    protected $table = 'users'; // Ensure it matches your DB table
-
-    protected $primaryKey = 'User_ID'; // Your primary key in users table
-
-    public $timestamps = false; // Since your migration does not include 'updated_at' and 'created_at'
+    protected $table = 'users'; 
+    protected $primaryKey = 'user_id'; 
+    public $timestamps = false;
 
     protected $fillable = [
-        'user_name',   // Column name from your DB
-        'user_email',  // Column name from your DB
-        'user_password', // Column name from your DB
+        'user_name',
+        'user_email',
+        'password', // Changed from 'user_password' to 'password' for Laravel compatibility
     ];
 
     protected $hidden = [
-        'user_password', // Ensure password is not exposed
+        'password', // Changed from 'user_password'
         'remember_token',
     ];
 
-    protected $casts = [
-        'user_password' => 'hashed', // Ensures automatic hashing
-    ];
+    /**
+     * Get the identifier that will be stored in the JWT token.
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key-value array containing any custom claims for the JWT.
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 }
