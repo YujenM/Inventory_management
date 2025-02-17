@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class product extends Model
+class Product extends Model
 {
-    // use HasFactory;
+    use HasFactory;
 
-    // Table Name
-    protected $table = 'products';
+    protected $table = 'products'; // Specify table name
+    protected $primaryKey = 'product_id'; // Define the primary key
 
-    // Primary Key
-    protected $primaryKey = 'product_id';
+    public $incrementing = true; // Set to false if it's not auto-incrementing
+    protected $keyType = 'int'; // Ensures Laravel treats it as an integer
 
-    // Fillable fields
     protected $fillable = [
         'product_name',
         'product_price',
@@ -22,13 +22,10 @@ class product extends Model
         'user_id',
     ];
 
-    // Timestamps
-    public $timestamps = true;
+    public $timestamps = true; // Enable timestamps
 
-    // Relationship with User
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 }
-

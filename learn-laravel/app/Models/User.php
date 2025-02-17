@@ -18,7 +18,7 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'user_name',
         'user_email',
-        'password', // Changed from 'user_password' to 'password' for Laravel compatibility
+        'user_password', 
     ];
 
     protected $hidden = [
